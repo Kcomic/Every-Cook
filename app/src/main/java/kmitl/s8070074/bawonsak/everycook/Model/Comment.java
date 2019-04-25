@@ -1,7 +1,7 @@
 package kmitl.s8070074.bawonsak.everycook.Model;
 
 public class Comment {
-    
+
     private String message;
     private String username;
     private String like;

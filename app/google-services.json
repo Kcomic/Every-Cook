@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "681734140032",
+    "firebase_url": "https://every-cook.firebaseio.com",
+    "project_id": "every-cook",
+    "storage_bucket": "every-cook.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:681734140032:android:69aa81fea76db02b",
+        "android_client_info": {
+          "package_name": "kmitl.s8070074.bawonsak.everycook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "681734140032-5v7c196242e047ros3itc5ri22tf85eg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhJB7rEa3BB2__9_sYX-cXFvGAboPaKU0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "681734140032-5v7c196242e047ros3itc5ri22tf85eg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

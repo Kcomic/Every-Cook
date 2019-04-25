@@ -1,19 +1,23 @@
 package kmitl.s8070074.bawonsak.everycook.Model;
 
+import java.util.ArrayList;
+
 public class Food {
 
     private String name;
     private String method;
     private String detail;
+    private ArrayList<String> materails;
     private int rating;
     private Comment comment;
 
-    public Food(String name, String method, String detail, int rating, Comment comment) {
+    public Food(String name, String method, String detail, int rating, Comment comment, ArrayList<String> materails) {
         this.name = name;
         this.method = method;
         this.detail = detail;
         this.rating = rating;
         this.comment = comment;
+        this.materails = materails;
     }
 
     public String getName() {
@@ -54,5 +58,13 @@ public class Food {
 
     public void setComment(Comment comment) {
         this.comment = comment;
+    }
+
+    public ArrayList<String> getMaterails() {
+        return materails;
+    }
+
+    public void setMaterails(ArrayList<String> materails) {
+        this.materails = materails;
     }
 }
