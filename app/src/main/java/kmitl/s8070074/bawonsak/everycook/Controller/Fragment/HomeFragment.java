@@ -6,7 +6,22 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import kmitl.s8070074.bawonsak.everycook.Model.Food;
 import kmitl.s8070074.bawonsak.everycook.R;
 
 /**
@@ -29,6 +44,11 @@ public class HomeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private DatabaseReference mRootRef;
+    private List<Food> foods;
+
+    @BindView(R.id.name)
+    TextView name;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -58,13 +78,47 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+        foods = new ArrayList<>();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        ButterKnife.bind(this, rootView);
+        query();
+        return rootView;
+    }
+
+    public void query(){
+        mRootRef.child("Food").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Map<String, Object> foodList = (Map<String, Object>) dataSnapshot.getValue();
+
+                for(String key : foodList.keySet()){
+                    Map<String, Object> m = (Map<String, Object>) foodList.get(key);
+                    /*Map<String, Object> materails = (Map<String, Object>) m.get("materails");
+                    ArrayList<String> materailsList = new ArrayList<>();
+                    for(String mate : materails.keySet()){
+                        materailsList.add(mate);
+                    }*/
+                    Food f = new Food(key, m.get("method").toString(), "-", 0, null, (Map<String, String>) m.get("materails"));
+                    foods.add(f);
+                    name.setText(foods.size()+"");
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
