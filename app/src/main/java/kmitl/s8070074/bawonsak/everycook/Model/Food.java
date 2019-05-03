@@ -8,17 +8,17 @@ public class Food {
     private String name;
     private String method;
     private String detail;
-    private Map<String, String> materails;
+    private Map<String, String> materials;
     private int rating;
     private Comment comment;
 
-    public Food(String name, String method, String detail, int rating, Comment comment, Map<String, String> materails) {
+    public Food(String name, String method, String detail, int rating, Comment comment, Map<String, String> materials) {
         this.name = name;
         this.method = method;
         this.detail = detail;
         this.rating = rating;
         this.comment = comment;
-        this.materails = materails;
+        this.materials = materials;
     }
 
     public String getName() {
@@ -61,11 +61,11 @@ public class Food {
         this.comment = comment;
     }
 
-    public Map<String, String> getMaterails() {
-        return materails;
+    public Map<String, String> getMaterials() {
+        return materials;
     }
 
-    public void setMaterails(Map<String, String> materails) {
-        this.materails = materails;
+    public void setMaterials(Map<String, String> materials) {
+        this.materials = materials;
     }
 }

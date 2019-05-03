@@ -1,7 +1,10 @@
 package kmitl.s8070074.bawonsak.everycook.Controller.Fragment;
 
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,22 +49,14 @@ public class HomeFragment extends Fragment {
 
     private DatabaseReference mRootRef;
     private List<Food> foods;
-
+    private ArrayList<String> materialList;
     @BindView(R.id.name)
     TextView name;
     public HomeFragment() {
-        // Required empty public constructor
+
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -95,6 +90,7 @@ public class HomeFragment extends Fragment {
     public void query(){
         mRootRef.child("Food").addListenerForSingleValueEvent(new ValueEventListener() {
 
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Map<String, Object> foodList = (Map<String, Object>) dataSnapshot.getValue();
@@ -106,11 +102,12 @@ public class HomeFragment extends Fragment {
                     for(String mate : materails.keySet()){
                         materailsList.add(mate);
                     }*/
-                    Food f = new Food(key, m.get("method").toString(), "-", 0, null, (Map<String, String>) m.get("materails"));
-                    foods.add(f);
-                    name.setText(foods.size()+"");
-                }
 
+
+                    Food f = new Food(key, m.get("method").toString(), "-", 0, null, (Map<String, String>) m.get("materials"));
+                    foods.add(f);
+                }
+                //updateMaterial(getMaterialList());
             }
 
             @Override
@@ -128,16 +125,26 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    private void updateMaterial(ArrayList<String> materialList){
+        mRootRef.child("Material").setValue(materialList);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private ArrayList<String> getMaterialList(){
+        ArrayList<String> materialList = new ArrayList<>();
+        for(Food f : foods){
+            for(Map.Entry<String, String> materials : f.getMaterials().entrySet()){
+                int i = 0;
+                for(i = 0; i < materialList.size(); i++) {
+                    if(materials.getKey().equals(materialList.get(i))) break;
+                }
+                if(i == materialList.size()) materialList.add(materials.getKey());
+            }
+        }
+        name.setText(String.join(" ", materialList));
+        return materialList;
+    }
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
