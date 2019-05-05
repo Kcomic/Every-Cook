@@ -6,9 +6,9 @@ public class History {
 
     private String username;
     private int times;
-    private ArrayList<String> choose;
+    private ArrayList<Integer> choose;
 
-    public History(String username, int times, ArrayList<String> choose) {
+    public History(String username, int times, ArrayList<Integer> choose) {
         this.username = username;
         this.times = times;
         this.choose = choose;
@@ -30,11 +30,11 @@ public class History {
         this.times = times;
     }
 
-    public ArrayList<String> getChoose() {
+    public ArrayList<Integer> getChoose() {
         return choose;
     }
 
-    public void setChoose(ArrayList<String> choose) {
+    public void setChoose(ArrayList<Integer> choose) {
         this.choose = choose;
     }
 }

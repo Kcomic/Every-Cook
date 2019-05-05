@@ -26,6 +26,8 @@ import kmitl.s8070074.bawonsak.everycook.Model.Food;
 import kmitl.s8070074.bawonsak.everycook.Model.History;
 import kmitl.s8070074.bawonsak.everycook.R;
 
+import static java.lang.Math.sqrt;
+
 
 public class RecommendMenuFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -38,6 +40,9 @@ public class RecommendMenuFragment extends Fragment {
     private String mParam2;
     private DatabaseReference mRootRef;
     private ArrayList<History> histories;
+    private ArrayList<String> materialList;
+    private ArrayList<ArrayList<Double>> cosim;
+    private ArrayList<ArrayList<Integer>> data;
     private OnFragmentInteractionListener mListener;
     @BindView(R.id.name)
     TextView name;
@@ -63,6 +68,9 @@ public class RecommendMenuFragment extends Fragment {
         }
         mRootRef = FirebaseDatabase.getInstance().getReference();
         histories = new ArrayList<>();
+        materialList = new ArrayList<>();
+        data = new ArrayList<>();
+        cosim = new ArrayList<>();
     }
 
     @Override
@@ -75,6 +83,24 @@ public class RecommendMenuFragment extends Fragment {
         return rootView;
     }
 
+    public int getSizeMaterial(){
+        mRootRef.child("Material").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                materialList = (ArrayList<String>) dataSnapshot.getValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
+        return materialList.size();
+    }
+
     public void query(){
         mRootRef.child("Choose").addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -85,22 +111,52 @@ public class RecommendMenuFragment extends Fragment {
                 for(String username : chooseList.keySet()){
                     Map<String, Object> his = (Map<String, Object>) chooseList.get(username);
                     for(String times : his.keySet()) {
-                        ArrayList<String> materailsList = (ArrayList<String>)his.get(times);
-                        /*Map<String, Object> mat = (Map<String, Object>) his.get(times);
+                        ArrayList<Integer> materailsList = new ArrayList<>();
+                        Map<String, Object> mat = (Map<String, Object>) his.get(times);
                         for(String mate : mat.keySet()){
-                            materailsList.add(mat.get(mate).toString());
-                        }*/
+                            materailsList.add(Integer.valueOf(mate.replaceAll("\\D+","")));
+                        }
                         History h = new History(username, Integer.valueOf(times.replaceAll("\\D+","")), materailsList);
                         histories.add(h);
                     }
                 }
-                String test = "";
+
                 for(History h : histories){
-                    for(String s : h.getChoose()){
-                        test += s;
+                    ArrayList<Integer> dimension2 = new ArrayList<>();
+                    for(int i=0; i < 12;i++){
+                        if(h.getChoose().contains(i)) dimension2.add(1);
+                        else dimension2.add(0);
                     }
+                    data.add(new ArrayList<>(dimension2));
                 }
-                name.setText(test);
+                for(int row = 0; row < data.get(0).size(); row++){
+                    ArrayList<Double> list = new ArrayList<>();
+                    for(int col = 0; col < data.get(0).size(); col++){
+                        int sum1 = 0, sum2 = 0, sum3 = 0;
+                        for(int dimension1 = 0; dimension1 < data.size(); dimension1++){
+                            int product = 1, dimension2 = 9;
+                            for(int i = 0; i < 2; i++){
+                                if(i == 0) dimension2 = row;
+                                else dimension2 = col;
+                                product *= data.get(dimension1).get(dimension2);
+                            }
+                            sum1 += product;
+                            sum2 += data.get(dimension1).get(row)*data.get(dimension1).get(row);
+                            sum3 += data.get(dimension1).get(col)*data.get(dimension1).get(col);
+                        }
+                        list.add(sum1/(sqrt(sum2)*sqrt(sum3)));
+                    }
+                    cosim.add(new ArrayList<>(list));
+                }
+                String test = "{";
+                for(ArrayList<Integer> d : data){
+                    test += " [";
+                    for(Integer d2 : d){
+                        test += d2+" ";
+                    }
+                    test += "] ";
+                }
+                name.setText(test+"}");
             }
 
             @Override
