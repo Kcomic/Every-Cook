@@ -25,6 +25,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import kmitl.s8070074.bawonsak.everycook.Model.Food;
+import kmitl.s8070074.bawonsak.everycook.Model.Member;
 import kmitl.s8070074.bawonsak.everycook.R;
 
 /**
@@ -41,12 +42,8 @@ public class HomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
-
+    private Member member;
     private DatabaseReference mRootRef;
     private List<Food> foods;
     private ArrayList<String> materialList;
@@ -57,11 +54,10 @@ public class HomeFragment extends Fragment {
     }
 
 
-    public static HomeFragment newInstance(String param1, String param2) {
+    public static HomeFragment newInstance(Member member) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelable("member", member);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,10 +65,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        member = getArguments().getParcelable("member");
         mRootRef = FirebaseDatabase.getInstance().getReference();
         foods = new ArrayList<>();
     }
@@ -80,7 +73,6 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, rootView);
         query();

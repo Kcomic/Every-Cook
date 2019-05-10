@@ -1,13 +1,17 @@
 package kmitl.s8070074.bawonsak.everycook.Controller.Activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,6 +20,7 @@ import kmitl.s8070074.bawonsak.everycook.Controller.Fragment.FavoriteMenuFragmen
 import kmitl.s8070074.bawonsak.everycook.Controller.Fragment.HomeFragment;
 import kmitl.s8070074.bawonsak.everycook.Controller.Fragment.ProfileFragment;
 import kmitl.s8070074.bawonsak.everycook.Controller.Fragment.RecommendMenuFragment;
+import kmitl.s8070074.bawonsak.everycook.Model.Member;
 import kmitl.s8070074.bawonsak.everycook.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -37,6 +42,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.profileTv) TextView profileTv;
 
     private FragmentManager fragmentManager;
+    private Member member;
+    private ArrayList<String> materialList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +55,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fragmentManager = getSupportFragmentManager();
         homeTv.setTextColor(Color.parseColor("#ff4656"));
         //homeIv.setImageResource(R.drawable.ic_press_home);
+        Intent intent = getIntent();
+        member = intent.getParcelableExtra("member");
         fragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, new HomeFragment())
+                .replace(R.id.fragmentContainer, new HomeFragment().newInstance(member))
                 .commit();
     }
 

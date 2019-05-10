@@ -1,5 +1,6 @@
 package kmitl.s8070074.bawonsak.everycook.Controller.Fragment;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -7,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import kmitl.s8070074.bawonsak.everycook.Controller.Activity.LoginActivity;
 import kmitl.s8070074.bawonsak.everycook.R;
+import kmitl.s8070074.bawonsak.everycook.UserPreferences;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,6 +67,11 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        logout();
+        startActivity(intent);
+        getActivity().finish();
+        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
@@ -87,5 +95,9 @@ public class ProfileFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void logout(){
+        UserPreferences.clearUserName(getActivity());
     }
 }

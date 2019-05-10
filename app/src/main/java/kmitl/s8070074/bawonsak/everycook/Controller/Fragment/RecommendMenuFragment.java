@@ -6,9 +6,13 @@ import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -40,12 +44,13 @@ public class RecommendMenuFragment extends Fragment {
     private String mParam2;
     private DatabaseReference mRootRef;
     private ArrayList<History> histories;
-    private ArrayList<String> materialList;
+    public static ArrayList<String> materialList;
     private ArrayList<ArrayList<Double>> cosim;
     private ArrayList<ArrayList<Integer>> data;
     private OnFragmentInteractionListener mListener;
-    @BindView(R.id.name)
-    TextView name;
+    private AutoCompleteTextView autoTv;
+//    @BindView(R.id.autocomplete_materials)
+//    AutoCompleteTextView textView;
     public RecommendMenuFragment() {
         // Required empty public constructor
     }
@@ -68,7 +73,6 @@ public class RecommendMenuFragment extends Fragment {
         }
         mRootRef = FirebaseDatabase.getInstance().getReference();
         histories = new ArrayList<>();
-        materialList = new ArrayList<>();
         data = new ArrayList<>();
         cosim = new ArrayList<>();
     }
@@ -77,18 +81,22 @@ public class RecommendMenuFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_recommend_menu, container, false);
+        autoTv = rootView.findViewById(R.id.autocomplete_materials);
         ButterKnife.bind(this, rootView);
         query();
+        Log.d("eiei", "กำ");
         return rootView;
     }
 
-    public int getSizeMaterial(){
+    public ArrayList<String> getMaterialList(){
+        final ArrayList<String>[] materials = new ArrayList[]{new ArrayList<>()};
         mRootRef.child("Material").addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                materialList = (ArrayList<String>) dataSnapshot.getValue();
+                materials[0] = (ArrayList<String>) dataSnapshot.getValue();
+                Log.d("eiei", materials[0].size()+"");
             }
 
             @Override
@@ -98,8 +106,9 @@ public class RecommendMenuFragment extends Fragment {
 
         });
 
-        return materialList.size();
+        return materials[0];
     }
+
 
     public void query(){
         mRootRef.child("Choose").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -144,19 +153,15 @@ public class RecommendMenuFragment extends Fragment {
                             sum2 += data.get(dimension1).get(row)*data.get(dimension1).get(row);
                             sum3 += data.get(dimension1).get(col)*data.get(dimension1).get(col);
                         }
-                        list.add(sum1/(sqrt(sum2)*sqrt(sum3)));
+                        if(sum2 == 0 || sum3 == 0){
+                            list.add(0.0);
+                        } else {
+                            list.add(sum1 / (sqrt(sum2) * sqrt(sum3)));
+                        }
                     }
                     cosim.add(new ArrayList<>(list));
                 }
-                String test = "{";
-                for(ArrayList<Integer> d : data){
-                    test += " [";
-                    for(Integer d2 : d){
-                        test += d2+" ";
-                    }
-                    test += "] ";
-                }
-                name.setText(test+"}");
+                Log.d("eiei", materialList.size()+"");
             }
 
             @Override
