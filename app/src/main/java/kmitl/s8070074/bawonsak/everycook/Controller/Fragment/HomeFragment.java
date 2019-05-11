@@ -1,11 +1,14 @@
 package kmitl.s8070074.bawonsak.everycook.Controller.Fragment;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +25,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import kmitl.s8070074.bawonsak.everycook.Adapter.FoodAdapter;
+import kmitl.s8070074.bawonsak.everycook.Controller.Activity.FoodDetailActivity;
+import kmitl.s8070074.bawonsak.everycook.Model.Comment;
 import kmitl.s8070074.bawonsak.everycook.Model.Food;
 import kmitl.s8070074.bawonsak.everycook.Model.Member;
 import kmitl.s8070074.bawonsak.everycook.R;
@@ -36,19 +44,17 @@ import kmitl.s8070074.bawonsak.everycook.R;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class HomeFragment extends Fragment implements FoodAdapter.FoodAdapterListener {
 
     private OnFragmentInteractionListener mListener;
+    private FoodAdapter foodAdapter;
+    private RecyclerView recyclerView;
     private Member member;
     private DatabaseReference mRootRef;
     private List<Food> foods;
+    private Food food;
+    private ArrayList<Comment> comments;
     private ArrayList<String> materialList;
-    @BindView(R.id.name)
-    TextView name;
     public HomeFragment() {
 
     }
@@ -68,25 +74,27 @@ public class HomeFragment extends Fragment {
         member = getArguments().getParcelable("member");
         mRootRef = FirebaseDatabase.getInstance().getReference();
         foods = new ArrayList<>();
+        comments = new ArrayList<>();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        recyclerView = rootView.findViewById(R.id.foodList);
         ButterKnife.bind(this, rootView);
         query();
         return rootView;
     }
 
     public void query(){
-        mRootRef.child("Food").addListenerForSingleValueEvent(new ValueEventListener() {
+        mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Map<String, Object> foodList = (Map<String, Object>) dataSnapshot.getValue();
-
+                Map<String, Object> all = (Map<String, Object>) dataSnapshot.getValue();
+                Map<String, Object> foodList = (Map<String, Object>) all.get("Food");
                 for(String key : foodList.keySet()){
                     Map<String, Object> m = (Map<String, Object>) foodList.get(key);
                     /*Map<String, Object> materails = (Map<String, Object>) m.get("materails");
@@ -94,12 +102,26 @@ public class HomeFragment extends Fragment {
                     for(String mate : materails.keySet()){
                         materailsList.add(mate);
                     }*/
+                    food = new Food(key, (ArrayList<String>) m.get("method"), m.get("detail").toString(), (Map<String, String>) m.get("materials"), (Map<String, String>) m.get("garnish"), m.get("rating").toString(), m.get("view").toString(), m.get("url").toString());
 
+                    Map<String, Object> userList = (Map<String, Object>) all.get("Member");
+                    Map<String, Object> user = (Map<String, Object>) userList.get(m.get("username"));
+                    Member member = new Member(m.get("username").toString(), user.get("name").toString(), user.get("rating").toString(), user.get("fullname").toString(), user.get("url").toString());
+                    food.setMember(member);
 
-                    Food f = new Food(key, m.get("method").toString(), "-", 0, null, (Map<String, String>) m.get("materials"));
-                    foods.add(f);
+                    Map<String, Object> allComment = (Map<String, Object>) all.get("Comment");
+                    Map<String, Object> commentList = (Map<String, Object>) allComment.get(food.getName());
+                    if(commentList != null) {
+                        for (String username : commentList.keySet()) {
+                            Map<String, Object> m2 = (Map<String, Object>) commentList.get(username);
+                            Comment comment = new Comment(m2.get("message").toString(), username, m2.get("date").toString(), m2.get("time").toString());
+                            comments.add(comment);
+                        }
+                        food.setComment(comments);
+                    }
+                    foods.add(food);
                 }
-                //updateMaterial(getMaterialList());
+                setAdapter(foods);
             }
 
             @Override
@@ -108,6 +130,13 @@ public class HomeFragment extends Fragment {
             }
 
         });
+    }
+
+    public void setAdapter(List<Food> foods){
+        foodAdapter = new FoodAdapter(getActivity(), HomeFragment.this);
+        recyclerView.setAdapter(foodAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        foodAdapter.setFoods(foods);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -133,8 +162,16 @@ public class HomeFragment extends Fragment {
                 if(i == materialList.size()) materialList.add(materials.getKey());
             }
         }
-        name.setText(String.join(" ", materialList));
         return materialList;
+    }
+
+    @Override
+    public void onItemTouched(Food food) {
+        Intent intent = new Intent(getActivity(), FoodDetailActivity.class);
+        intent.putExtra("food", food);
+        intent.putExtra("member", member);
+        startActivity(intent);
+        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     public interface OnFragmentInteractionListener {

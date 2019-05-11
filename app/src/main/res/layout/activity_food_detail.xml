@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Controller.Activity.FoodDetailActivity">
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:id="@+id/foodImageDec"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/food" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/foodNameDec"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ไก่ผัดน้ำมันหอย"
+                    android:textColor="#000000"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/detailDec"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="สูตรเด็ด"
+                    android:textColor="#000000" />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="10dp"
+                    android:background="#FFFFFF"
+                    android:layout_margin="10dp"
+                    >
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical">
+                <TextView
+                    android:id="@+id/materialTextDec"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="วัตถุดิบ"
+                    android:textColor="#000000"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/materialDec"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="1. สะโพกไก่ 250 กรัม"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/garnishTextDec"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="เครื่องปรุง"
+                    android:textColor="#000000"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/garnishDec"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="1. กระเทียม 4 กลีบ\n2. ซอสปรุงรส 1 ช้อนโต๊ะ\n3. น้ำตาล 1 ช้อนโต๊ะ\n4. น้ำปลา 1/2 ช้อนโต๊ะ\n5. น้ำมันหอย 2 ช้อนโต๊ะ\n6. ผงชูรส\n7. พริกไท 5 เม็ด\n8. รากผักชี 2 ราก"
+                    android:textColor="#000000" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="10dp"
+                    android:background="#FFFFFF"
+                    android:layout_margin="10dp"
+                    >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+                <TextView
+                    android:id="@+id/methodTextDec"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="วิธีทำ"
+                    android:textColor="#000000"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/methodDec"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="1. กระเทียม 4 กลีบ\n2. ซอสปรุงรส 1 ช้อนโต๊ะ\n3. น้ำตาล 1 ช้อนโต๊ะ\n4. น้ำปลา 1/2 ช้อนโต๊ะ\n5. น้ำมันหอย 2 ช้อนโต๊ะ\n6. ผงชูรส\n7. พริกไท 5 เม็ด\n8. รากผักชี 2 ราก"
+                    android:textColor="#000000" />
+                </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="10dp"
+                    android:background="#FFFFFF"
+                    android:layout_margin="10dp"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/ratingTextDec"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ratings"
+                            android:textColor="#000000"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            >
+                        <TextView
+                            android:id="@+id/ratingDec"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:textSize="30sp"
+                            android:text="4.5"
+                            android:textColor="#000000" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="out of 5"
+                            android:textColor="#000000" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tap to Rate:"
+                                android:layout_gravity="center"
+                                />
+                        <RatingBar
+                            android:id="@+id/ratingBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="10dp"
+                    android:background="#FFFFFF"
+                    android:layout_margin="10dp"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/commentTextDec"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ความคิดเห็น"
+                            android:textColor="#000000"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/commentList"
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            >
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:padding="5dp"
+                                android:orientation="horizontal">
+                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                                    android:id="@+id/member_image_dec"
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:src="@drawable/ic_action_name"
+                                    android:padding="6dp"
+                                    android:layout_gravity="center"
+                                    />
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    >
+
+                                    <EditText
+                                        android:id="@+id/new_comment"
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="12"
+                                        android:hint="เพิ่มความคิดเห็นของคุณ"
+                                        android:inputType="textPersonName" />
+                                </com.google.android.material.textfield.TextInputLayout>
+                                <ImageView
+                                    android:id="@+id/send_button"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:src="@drawable/ic_send_button"
+                                    android:layout_gravity="center"
+                                    />
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/memberTextDec"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="ผู้เผยแพร่"
+                    android:textColor="#000000"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/owner_image_dec"
+                        android:layout_width="50dp"
+                        android:layout_gravity="center"
+                        android:layout_height="50dp"
+                        android:padding="6dp"
+                        android:src="@drawable/ic_action_name"
+                        />
+
+                    <TextView
+                        android:id="@+id/owner_name_dec"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Kay Bawonsak"
+                        android:layout_gravity="center"
+                        android:textColor="#000000" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

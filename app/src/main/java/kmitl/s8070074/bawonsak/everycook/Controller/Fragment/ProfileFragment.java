@@ -1,12 +1,15 @@
 package kmitl.s8070074.bawonsak.everycook.Controller.Fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import kmitl.s8070074.bawonsak.everycook.Controller.Activity.LoginActivity;
 import kmitl.s8070074.bawonsak.everycook.R;
@@ -67,12 +70,23 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Intent intent = new Intent(getContext(), LoginActivity.class);
-        logout();
-        startActivity(intent);
-        getActivity().finish();
-        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+        CircularImageView circularImageView = rootView.findViewById(R.id.yourCircularImageView);
+// Set Border
+        circularImageView.setBorderWidth(10);
+// Add Shadow with default param
+        circularImageView.addShadow();
+// or with custom param
+        circularImageView.setShadowRadius(15);
+        circularImageView.setShadowColor(Color.RED);
+        circularImageView.setBackgroundColor(Color.RED);
+        circularImageView.setShadowGravity(CircularImageView.ShadowGravity.CENTER);
+//        Intent intent = new Intent(getContext(), LoginActivity.class);
+//        logout();
+//        startActivity(intent);
+//        getActivity().finish();
+//        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
