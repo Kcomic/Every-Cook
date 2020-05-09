@@ -1,5 +1,7 @@
 package kmitl.s8070074.bawonsak.everycook.Controller.Fragment;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,44 +24,50 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import kmitl.s8070074.bawonsak.everycook.Adapter.FoodAdapter;
+import kmitl.s8070074.bawonsak.everycook.Adapter.MaterialAdapter;
+import kmitl.s8070074.bawonsak.everycook.Controller.Activity.FoodDetailActivity;
 import kmitl.s8070074.bawonsak.everycook.Model.Food;
 import kmitl.s8070074.bawonsak.everycook.Model.History;
+import kmitl.s8070074.bawonsak.everycook.Model.Member;
 import kmitl.s8070074.bawonsak.everycook.R;
 
 import static java.lang.Math.sqrt;
 
 
-public class RecommendMenuFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class RecommendMenuFragment extends Fragment implements MaterialAdapter.MaterialAdapterListener {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private Member member;
     private DatabaseReference mRootRef;
     private ArrayList<History> histories;
-    public static ArrayList<String> materialList;
+    private ArrayList<String> materialList;
     private ArrayList<ArrayList<Double>> cosim;
     private ArrayList<ArrayList<Integer>> data;
     private OnFragmentInteractionListener mListener;
     private AutoCompleteTextView autoTv;
+    private MaterialAdapter materialAdapter;
+    private RecyclerView recyclerView;
+    private ProgressDialog progress;
+    private FragmentManager fragmentManager;
 //    @BindView(R.id.autocomplete_materials)
 //    AutoCompleteTextView textView;
     public RecommendMenuFragment() {
         // Required empty public constructor
     }
 
-    public static RecommendMenuFragment newInstance(String param1, String param2) {
+    public static RecommendMenuFragment newInstance(Member member) {
         RecommendMenuFragment fragment = new RecommendMenuFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelable("member", member);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,14 +75,13 @@ public class RecommendMenuFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        member = getArguments().getParcelable("member");
         mRootRef = FirebaseDatabase.getInstance().getReference();
         histories = new ArrayList<>();
         data = new ArrayList<>();
         cosim = new ArrayList<>();
+        progress = new ProgressDialog(getContext());
+        fragmentManager = getActivity().getSupportFragmentManager();
     }
 
     @Override
@@ -82,8 +89,10 @@ public class RecommendMenuFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_recommend_menu, container, false);
-        autoTv = rootView.findViewById(R.id.autocomplete_materials);
+        recyclerView = rootView.findViewById(R.id.materialList);
         ButterKnife.bind(this, rootView);
+        progress.setMessage("loading materials");
+        progress.show();
         query();
         Log.d("eiei", "กำ");
         return rootView;
@@ -111,11 +120,12 @@ public class RecommendMenuFragment extends Fragment {
 
 
     public void query(){
-        mRootRef.child("Choose").addListenerForSingleValueEvent(new ValueEventListener() {
+        mRootRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Map<String, Object> chooseList = (Map<String, Object>) dataSnapshot.getValue();
+                Map<String, Object> all = (Map<String, Object>) dataSnapshot.getValue();
+                Map<String, Object> chooseList = (Map<String, Object>) all.get("Choose");
 
                 for(String username : chooseList.keySet()){
                     Map<String, Object> his = (Map<String, Object>) chooseList.get(username);
@@ -130,9 +140,15 @@ public class RecommendMenuFragment extends Fragment {
                     }
                 }
 
+                materialList = (ArrayList<String>) all.get("Material");
+                for(String s : materialList){
+                    Log.d("materail", s);
+                }
+                setAdapter(materialList);
+                progress.cancel();
                 for(History h : histories){
                     ArrayList<Integer> dimension2 = new ArrayList<>();
-                    for(int i=0; i < 12;i++){
+                    for(int i=0; i < materialList.size();i++){
                         if(h.getChoose().contains(i)) dimension2.add(1);
                         else dimension2.add(0);
                     }
@@ -161,7 +177,6 @@ public class RecommendMenuFragment extends Fragment {
                     }
                     cosim.add(new ArrayList<>(list));
                 }
-                Log.d("eiei", materialList.size()+"");
             }
 
             @Override
@@ -172,11 +187,20 @@ public class RecommendMenuFragment extends Fragment {
         });
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    public void setAdapter(List<String> materials){
+        materialAdapter = new MaterialAdapter(getActivity(), RecommendMenuFragment.this);
+        recyclerView.setAdapter(materialAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        materialAdapter.setMaterials(materials);
+    }
+
+    @Override
+    public void onItemTouched(String material, int position) {
+        HashMap<String, String> choose = new HashMap<>();
+        choose.put("not_"+position, material);
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, new RecommendConFragment().newInstance(member, cosim, materialList, choose, position, histories))
+                .commit();
     }
 
     public interface OnFragmentInteractionListener {

@@ -34,6 +34,7 @@
                 android:id="@+id/homeIv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:src="@drawable/ic_button_home"
                 android:layout_gravity="center"
                 />
             <TextView
@@ -58,12 +59,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:src="@drawable/ic_button_favorite"
                 />
             <TextView
                 android:id="@+id/favoriteTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Like"
+                android:text="Favorite"
                 android:layout_gravity="center"
                 />
 
@@ -82,12 +84,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:src="@drawable/ic_button_material"
                 />
             <TextView
                 android:id="@+id/recommendTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Help"
+                android:text="Material"
                 android:layout_gravity="center"
                 />
 
@@ -106,6 +109,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:src="@drawable/ic_button_create"
                 />
             <TextView
                 android:id="@+id/createTv"
@@ -126,6 +130,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:src="@drawable/ic_button_profile"
                 />
 
             <TextView

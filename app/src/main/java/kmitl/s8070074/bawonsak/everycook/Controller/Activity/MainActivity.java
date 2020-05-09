@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Reset();
         fragmentManager = getSupportFragmentManager();
         homeTv.setTextColor(Color.parseColor("#ff4656"));
-        //homeIv.setImageResource(R.drawable.ic_press_home);
+        homeIv.setImageResource(R.drawable.ic_press_home);
         Intent intent = getIntent();
         member = intent.getParcelableExtra("member");
         fragmentManager.beginTransaction()
@@ -68,41 +68,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Reset();
             homeBtn.setOnClickListener(null);
             homeTv.setTextColor(Color.parseColor("#ff4656"));
-            //homeIv.setImageResource(R.drawable.ic_press_home);
+            homeIv.setImageResource(R.drawable.ic_press_home);
             fragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainer, new HomeFragment())
+                    .replace(R.id.fragmentContainer, new HomeFragment().newInstance(member))
                     .commit();
         } else if (R.id.favoriteBtn == view.getId()){
             Reset();
             favoriteBtn.setOnClickListener(null);
             favoriteTv.setTextColor(Color.parseColor("#ff4656"));
-            //favoriteIv.setImageResource(R.drawable.ic_press_time);
+            favoriteIv.setImageResource(R.drawable.ic_press_favorite);
             fragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainer, new FavoriteMenuFragment())
+                    .replace(R.id.fragmentContainer, new FavoriteMenuFragment().newInstance(member))
                     .commit();
         } else if (R.id.recommendBtn == view.getId()){
             Reset();
             recommendBtn.setOnClickListener(null);
             recommendTv.setTextColor(Color.parseColor("#ff4656"));
-            //recommendIv.setImageResource(R.drawable.ic_press_rating);
+            recommendIv.setImageResource(R.drawable.ic_press_material);
             fragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainer, new RecommendMenuFragment())
+                    .replace(R.id.fragmentContainer, new RecommendMenuFragment().newInstance(member))
                     .commit();
         } else if (R.id.createBtn == view.getId()){
             Reset();
             createBtn.setOnClickListener(null);
             createTv.setTextColor(Color.parseColor("#ff4656"));
-            //createIv.setImageResource(R.drawable.ic_press_rating);
+            createIv.setImageResource(R.drawable.ic_press_create);
             fragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainer, new CreateMenuFragment())
+                    .replace(R.id.fragmentContainer, new CreateMenuFragment().newInstance(member))
                     .commit();
         } else if (R.id.profileBtn == view.getId()){
             Reset();
             profileBtn.setOnClickListener(null);
             profileTv.setTextColor(Color.parseColor("#ff4656"));
-            //profileIv.setImageResource(R.drawable.ic_press_user);
+            profileIv.setImageResource(R.drawable.ic_press_profile);
             fragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainer, new ProfileFragment())
+                    .replace(R.id.fragmentContainer, new ProfileFragment().newInstance(member))
                     .commit();
         }
     }
@@ -113,11 +113,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recommendTv.setTextColor(Color.parseColor("#727272"));
         createTv.setTextColor(Color.parseColor("#727272"));
         profileTv.setTextColor(Color.parseColor("#727272"));
-//        homeIv.setImageResource(R.drawable.ic_menu_home);
-//        favoriteIv.setImageResource(R.drawable.ic_menu_time);
-//        recommendIv.setImageResource(R.drawable.ic_menu_rating);
-//        createIv.setImageResource(R.drawable.ic_rating);
-//        profileIv.setImageResource(R.drawable.ic_menu_user);
+        homeIv.setImageResource(R.drawable.ic_button_home);
+        favoriteIv.setImageResource(R.drawable.ic_button_favorite);
+        recommendIv.setImageResource(R.drawable.ic_button_material);
+        createIv.setImageResource(R.drawable.ic_button_create);
+        profileIv.setImageResource(R.drawable.ic_button_profile);
         homeBtn.setOnClickListener(this);
         favoriteBtn.setOnClickListener(this);
         createBtn.setOnClickListener(this);

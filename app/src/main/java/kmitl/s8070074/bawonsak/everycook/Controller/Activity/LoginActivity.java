@@ -83,6 +83,7 @@ public class LoginActivity extends AnimateIntent {
     }
 
     public void login() {
+        Log.d("testlogin", "buutton push");
         final String username = usernameEdt.getText().toString();
         final String password = passwordEdt.getText().toString();
         if (username == null || username.equals("") || password == null || password.equals("")) {
@@ -91,13 +92,13 @@ public class LoginActivity extends AnimateIntent {
         } else errorRequied = false;
         progress = new ProgressDialog(LoginActivity.this);
         progress.setMessage("login..");
-
+        Log.d("testlogin", "before database");
         mRootRef.child("Member").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Map<String, Object> userList = (Map<String, Object>) dataSnapshot.getValue();
                 Map<String, Object> user = (Map<String, Object>) userList.get(username);
-
+                Log.d("testlogin", "into database");
                 if (user == null) {
                     error = true;
                     errorMessage = "Username is incorrect";
@@ -132,6 +133,7 @@ public class LoginActivity extends AnimateIntent {
             if (error) {
                 Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
             } else {
+                Log.d("testlogin", "change page");
                 progress.show();
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.putExtra("member", member);

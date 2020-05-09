@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import kmitl.s8070074.bawonsak.everycook.Controller.Activity.LoginActivity;
+import kmitl.s8070074.bawonsak.everycook.Model.Member;
 import kmitl.s8070074.bawonsak.everycook.R;
 import kmitl.s8070074.bawonsak.everycook.UserPreferences;
 
@@ -24,35 +25,18 @@ import kmitl.s8070074.bawonsak.everycook.UserPreferences;
  * create an instance of this fragment.
  */
 public class ProfileFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private Member member;
 
     public ProfileFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
+    public static ProfileFragment newInstance(Member member) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelable("member", member);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,10 +44,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        member = getArguments().getParcelable("member");
     }
 
     @Override
@@ -71,21 +52,11 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
-        CircularImageView circularImageView = rootView.findViewById(R.id.yourCircularImageView);
-// Set Border
-        circularImageView.setBorderWidth(10);
-// Add Shadow with default param
-        circularImageView.addShadow();
-// or with custom param
-        circularImageView.setShadowRadius(15);
-        circularImageView.setShadowColor(Color.RED);
-        circularImageView.setBackgroundColor(Color.RED);
-        circularImageView.setShadowGravity(CircularImageView.ShadowGravity.CENTER);
-//        Intent intent = new Intent(getContext(), LoginActivity.class);
-//        logout();
-//        startActivity(intent);
-//        getActivity().finish();
-//        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        logout();
+        startActivity(intent);
+        getActivity().finish();
+        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         return rootView;
     }
 

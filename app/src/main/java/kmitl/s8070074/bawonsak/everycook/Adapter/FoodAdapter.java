@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class FoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
     public interface FoodAdapterListener {
 
-        public void onItemTouched(Food food);
+        public void onItemTouched(Food food, int position);
     }
     public void setFoods(List<Food> foods) {
         this.foods = foods;
@@ -45,11 +46,17 @@ public class FoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        ((FoodHolder)holder).itemView.setOnClickListener(v -> listener.onItemTouched(foods.get(position)));
+        ((FoodHolder)holder).itemView.setOnClickListener(v -> listener.onItemTouched(foods.get(position), position));
         ((FoodHolder)holder).memberName.setText(foods.get(position).getMember().getFullname());
         ((FoodHolder)holder).foodName.setText(foods.get(position).getName());
         ((FoodHolder)holder).view.setText(foods.get(position).getView());
-        ((FoodHolder)holder).rating.setText(foods.get(position).getRating());
+        double rating = 0;
+        for(String rate : foods.get(position).getRating()){
+            rating += Double.valueOf(rate);
+        }
+        if(foods.get(position).getRating().size() != 0) rating /= foods.get(position).getRating().size();
+        DecimalFormat df2 = new DecimalFormat("#.##");
+        ((FoodHolder)holder).rating.setText(df2.format(rating));
         //Picasso.with(mContext).load(events.get(position).getUrl()).fit().into(((EventHolder)holder).eventImage);
         ((FoodHolder)holder).relativeUser.setOnClickListener(view -> {
             Intent intent = new Intent(mContext, ProfileSomeone.class);

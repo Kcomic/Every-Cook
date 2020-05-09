@@ -7,15 +7,12 @@
     tools:context=".Controller.Fragment.ProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <com.mikhaellopez.circularimageview.CircularImageView
-        android:id="@+id/yourCircularImageView"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:src="@drawable/food"
-        app:civ_border_color="#EEEEEE"
-        app:civ_border_width="4dp"
-        app:civ_shadow="true"
-        app:civ_shadow_radius="10"
-        app:civ_shadow_color="#8BC34A"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="COMMING SOON!!"
+        android:textSize="30dp"
+        android:layout_gravity="center"
+        />
 
 </FrameLayout>

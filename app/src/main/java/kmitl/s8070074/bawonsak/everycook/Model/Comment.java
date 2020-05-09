@@ -6,13 +6,12 @@ import android.os.Parcelable;
 public class Comment implements Parcelable {
 
     private String message;
-    private String username;
+    private Member member;
     private String date;
     private String time;
 
-    public Comment(String message, String username, String date, String time) {
+    public Comment(String message, String date, String time) {
         this.message = message;
-        this.username = username;
         this.date = date;
         this.time = time;
     }
@@ -25,12 +24,12 @@ public class Comment implements Parcelable {
         this.message = message;
     }
 
-    public String getUsername() {
-        return username;
+    public Member getMember() {
+        return member;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
     public String getDate() {
@@ -57,14 +56,14 @@ public class Comment implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.message);
-        dest.writeString(this.username);
+        dest.writeParcelable(this.member, flags);
         dest.writeString(this.date);
         dest.writeString(this.time);
     }
 
     protected Comment(Parcel in) {
         this.message = in.readString();
-        this.username = in.readString();
+        this.member = in.readParcelable(Member.class.getClassLoader());
         this.date = in.readString();
         this.time = in.readString();
     }

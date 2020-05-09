@@ -14,13 +14,13 @@ public class Food implements Parcelable {
     private String detail;
     private Map<String, String> materials;
     private Map<String, String> garnish;
-    private String rating;
+    private ArrayList<String> rating;
     private String view;
     private String url;
     private Member member;
     private ArrayList<Comment> comments;
 
-    public Food(String name, ArrayList<String> method, String detail, Map<String, String> materials, Map<String, String> garnish, String rating, String view, String url) {
+    public Food(String name, ArrayList<String> method, String detail, Map<String, String> materials, Map<String, String> garnish, ArrayList<String> rating, String view, String url) {
         this.name = name;
         this.method = method;
         this.detail = detail;
@@ -71,11 +71,11 @@ public class Food implements Parcelable {
         this.garnish = garnish;
     }
 
-    public String getRating() {
+    public ArrayList<String> getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(ArrayList<String> rating) {
         this.rating = rating;
     }
 
@@ -131,7 +131,7 @@ public class Food implements Parcelable {
             dest.writeString(entry.getKey());
             dest.writeString(entry.getValue());
         }
-        dest.writeString(this.rating);
+        dest.writeStringList(this.rating);
         dest.writeString(this.view);
         dest.writeString(this.url);
         dest.writeParcelable(this.member, flags);
@@ -143,20 +143,20 @@ public class Food implements Parcelable {
         this.method = in.createStringArrayList();
         this.detail = in.readString();
         int materialsSize = in.readInt();
-        this.materials = new HashMap<String, String>(materialsSize);
+        this.materials = new HashMap<>(materialsSize);
         for (int i = 0; i < materialsSize; i++) {
             String key = in.readString();
             String value = in.readString();
             this.materials.put(key, value);
         }
         int garnishSize = in.readInt();
-        this.garnish = new HashMap<String, String>(garnishSize);
+        this.garnish = new HashMap<>(garnishSize);
         for (int i = 0; i < garnishSize; i++) {
             String key = in.readString();
             String value = in.readString();
             this.garnish.put(key, value);
         }
-        this.rating = in.readString();
+        this.rating = in.createStringArrayList();
         this.view = in.readString();
         this.url = in.readString();
         this.member = in.readParcelable(Member.class.getClassLoader());
